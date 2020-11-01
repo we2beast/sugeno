@@ -5,7 +5,7 @@ object Speed {
         SLOW, // Медленная скорость
     }
 
-    // Функция принадлежности для скорости
+    // Функция принадлежности для скорости (м/с)
     fun calculate(speed: Int, membership: MembershipFunction) =
         when (membership) {
             MembershipFunction.FAST ->

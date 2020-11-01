@@ -5,7 +5,7 @@ object Distance {
         EXTREMELY_CLOSE, // Крайне близко
     }
 
-    // Функция принадлежности для расстояния
+    // Функция принадлежности для расстояния (метры)
     fun calculate(distance: Int, membership: MembershipFunction) =
         when (membership) {
             MembershipFunction.FARAWAY ->

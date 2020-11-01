@@ -20,13 +20,17 @@ fun calculateDistance(distance: Double, speed: Double) = distance - speed
 
 
 fun main(args: Array<String>) {
+    // Пользовательские данные, которые можно изменять
     val speed = 17.0 // м/с
     val distance = 330.0 // метры
 
+
+    // Ниже код в данной функции лучше не редактировать
     var newDistance: Double = distance - speed * 1
     var newSpeed = speed
     var newKineticEnergy = calculateKineticEnergy(WEIGHT, newSpeed)
 
+    // Временной шаг в секундах
     var i = 1.0
     loop@ while (true) {
         // Расчет ошибки
@@ -40,7 +44,10 @@ fun main(args: Array<String>) {
         // Подсчет кинетической энергии с ошибкой
         val newKineticEnergyWithError = if (newKineticEnergy - errBrake <= 0.0) 0.0 else newKineticEnergy - errBrake
 
+        // Расчет дистанции
         newDistance = calculateDistance(newDistance, newSpeed)
+
+        // Расчет новой скорости, исходя из новой кинетической энергии и массы автомоболия
         newSpeed =
             if (sqrt((2.0 * newKineticEnergyWithError) / WEIGHT) <= 0.0) 0.0 else sqrt((2.0 * newKineticEnergyWithError) / WEIGHT)
 
@@ -101,6 +108,7 @@ fun run(speed: Double, distance: Double): Double {
         }
     }
 
+    // Суммирование всех значений матриц
     var sugenoSum = sugeno.sum() / databaseOfKnowledge.sumByDouble { it.sum() }
 
     sugenoSum = if (sugenoSum > 0) sugenoSum else 0.0
@@ -108,7 +116,12 @@ fun run(speed: Double, distance: Double): Double {
     return sugenoSum
 }
 
-// Правила Сугено
+/**
+ * Функция правил Сугено
+ * @param distance - Расстояние от автомобиля до препятствия
+ * @param speed - Скорость автомобиля
+ * @return Матрица правил для Сугено
+ */
 fun calculateBraking(speed: Double, distance: Double): List<List<Double>> {
     return listOf(
         listOf(0.0, 70.0 * speed + 12.0 * distance, 80.0 * speed + 120.0 * distance),
