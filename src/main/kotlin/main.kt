@@ -22,11 +22,11 @@ fun calculateDistance(distance: Double, speed: Double) = distance - speed
 fun main(args: Array<String>) {
     // Пользовательские данные, которые можно изменять
     val speed = 17.0 // м/с
-    val distance = 330.0 // метры
+    val distance = 600.0 // метры
 
 
     // Ниже код в данной функции лучше не редактировать
-    var newDistance: Double = distance - speed * 1
+    var newDistance = distance
     var newSpeed = speed
     var newKineticEnergy = calculateKineticEnergy(WEIGHT, newSpeed)
 
@@ -41,15 +41,17 @@ fun main(args: Array<String>) {
         // Подсчет кинетической энергии
         newKineticEnergy = calculateKineticEnergy(WEIGHT, newSpeed)
 
-        // Подсчет кинетической энергии с ошибкой
-        val newKineticEnergyWithError = if (newKineticEnergy - errBrake <= 0.0) 0.0 else newKineticEnergy - errBrake
+        val err = newKineticEnergy - (newKineticEnergy * (errBrake )) / 10
 
-        // Расчет дистанции
-        newDistance = calculateDistance(newDistance, newSpeed)
+        // Подсчет кинетической энергии с ошибкой
+        val newKineticEnergyWithError = if (err <= 0.0) 0.0 else err
 
         // Расчет новой скорости, исходя из новой кинетической энергии и массы автомоболия
         newSpeed =
             if (sqrt((2.0 * newKineticEnergyWithError) / WEIGHT) <= 0.0) 0.0 else sqrt((2.0 * newKineticEnergyWithError) / WEIGHT)
+
+        // Расчет дистанции
+        newDistance = calculateDistance(newDistance, newSpeed)
 
         if (newDistance <= 0.0) {
             println("Вы врезались в стену. Ваша скорость $newSpeed и расстояние $newDistance")
@@ -124,9 +126,21 @@ fun run(speed: Double, distance: Double): Double {
  */
 fun calculateBraking(speed: Double, distance: Double): List<List<Double>> {
     return listOf(
-        listOf(0.0, 70.0 * speed + 12.0 * distance, 80.0 * speed + 120.0 * distance),
-        listOf(12.0 * speed + 20.0 * distance, 30.0 * speed + 16.0 * distance, 10.0 * speed + 70.0 * distance),
-        listOf(0.0, 12.0 * speed + 10.0 * distance, 34.0 * speed + 120.0 * distance),
+        listOf(
+            0.0 * Speed.calculate(speed.toInt(), Speed.MembershipFunction.FAST) + 0.0 * Distance.calculate(distance.toInt(), Distance.MembershipFunction.FARAWAY),
+            0.5 * Speed.calculate(speed.toInt(), Speed.MembershipFunction.FAST) + 1.5 * Distance.calculate(distance.toInt(), Distance.MembershipFunction.NEARLY),
+            10.3 * Speed.calculate(speed.toInt(), Speed.MembershipFunction.FAST) + 1.8 * Distance.calculate(distance.toInt(), Distance.MembershipFunction.EXTREMELY_CLOSE),
+        ),
+        listOf(
+            0.0 * Speed.calculate(speed.toInt(), Speed.MembershipFunction.MEDIUM) + 0.0 * Distance.calculate(distance.toInt(), Distance.MembershipFunction.FARAWAY),
+            0.7 * Speed.calculate(speed.toInt(), Speed.MembershipFunction.MEDIUM) + 1.5 * Distance.calculate(distance.toInt(), Distance.MembershipFunction.NEARLY),
+            1.3 * Speed.calculate(speed.toInt(), Speed.MembershipFunction.MEDIUM) + 3.5 * Distance.calculate(distance.toInt(), Distance.MembershipFunction.EXTREMELY_CLOSE),
+        ),
+        listOf(
+            0.2 * Speed.calculate(speed.toInt(), Speed.MembershipFunction.SLOW) + 0.3 * Distance.calculate(distance.toInt(), Distance.MembershipFunction.FARAWAY),
+            2.5 * Speed.calculate(speed.toInt(), Speed.MembershipFunction.SLOW) + 2.5 * Distance.calculate(distance.toInt(), Distance.MembershipFunction.NEARLY),
+            13.3 * Speed.calculate(speed.toInt(), Speed.MembershipFunction.SLOW) + 15.5 * Distance.calculate(distance.toInt(), Distance.MembershipFunction.EXTREMELY_CLOSE),
+        ),
     )
 }
 

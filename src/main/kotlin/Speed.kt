@@ -6,27 +6,41 @@ object Speed {
     }
 
     // Функция принадлежности для скорости (м/с)
-    fun calculate(speed: Int, membership: MembershipFunction) =
+    fun calculate(x: Int, membership: MembershipFunction): Double {
         when (membership) {
-            MembershipFunction.FAST ->
-                when {
-                    speed >= 30 -> 1.0
-                    speed in 15..30 -> (speed - 30) / 15.0
-                    else -> 0.2
+            MembershipFunction.FAST -> {
+                if (x <= 15.0) {
+                    return 0.2
                 }
+
+                if (x < 30.0) {
+                    return (30.0 - x) / (30.0 - 15.0)
+                }
+
+                return 1.0
+            }
             MembershipFunction.MEDIUM -> {
-                when {
-                    speed >= 15 -> 1.0
-                    speed in 10..15 -> (15 - speed) / 5.0
-                    else -> 0.0
+                if (x <= 10.0) {
+                    return 1.0
                 }
+
+                if (x < 15.0) {
+                    return (15.0 - x) / (15.0 - 10.0)
+                }
+
+                return 0.1
             }
             MembershipFunction.SLOW -> {
-                when {
-                    speed <= 10 -> 1.0
-                    speed in 5..10 -> (10 - speed) / 5.0
-                    else -> 0.2
+                if (x <= 5.0) {
+                    return 1.0
                 }
+
+                if (x < 10.0) {
+                    return (10.0 - x) / (10.0 - 5.0)
+                }
+
+                return 0.1
             }
         }
+    }
 }

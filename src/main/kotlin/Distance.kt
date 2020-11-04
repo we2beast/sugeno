@@ -6,28 +6,42 @@ object Distance {
     }
 
     // Функция принадлежности для расстояния (метры)
-    fun calculate(distance: Int, membership: MembershipFunction) =
+    fun calculate(x: Int, membership: MembershipFunction): Double {
         when (membership) {
-            MembershipFunction.FARAWAY ->
-                when {
-                    distance <= 600 -> 0.0
-                    distance in 501..899 -> (distance - 501) / 398.0
-                    else -> 1.0
+            MembershipFunction.FARAWAY -> {
+                if (x <= 200.0) {
+                    return 1.0
                 }
+
+                if (x < 1000.0) {
+                    return (1000.0 - x) / (1000.0 - 200.0)
+                }
+
+                return 0.0
+            }
             MembershipFunction.NEARLY -> {
-                when {
-                    distance >= 300 -> 1.0
-                    distance in 71..200 -> (200 - distance) / 129.0
-                    distance in 201..599 -> (599.0 - distance) / 398.0
-                    else -> 0.0
+                if (x <= 80.0) {
+                    return 1.0
                 }
+
+                if (x < 140.0) {
+                    return (140.0 - x) / (140.0 - 80.0)
+                }
+
+                return 0.01
             }
             MembershipFunction.EXTREMELY_CLOSE -> {
-                when {
-                    distance <= 50 -> 1.0
-                    distance in 51..80 -> (80.0 - distance) / 29.0
-                    else -> 0.0
+                if (x <= 30.0) {
+                    return 1.0
                 }
+
+                if (x < 80.0) {
+                    return (80.0 - x) / (80.0 - 30.0)
+                }
+
+                return 0.01
             }
         }
+    }
+
 }
